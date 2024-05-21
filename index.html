@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Calculateur en JS</title>
+    <title>Convertisseur de Date Impériale</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 
-    <link rel="icon" type="image/png" href="logo.png" />
+    <link rel="icon" type="image/png" href="https://i.imgur.com/fCdYPCy.png" />
     
     <style>
         body {
@@ -96,6 +96,10 @@
             left: 2em;
         }
 
+        .error {
+            color: red !important;
+        }
+
         .title {
             color: #FCBA28;
             font-weight: bolder;
@@ -134,7 +138,6 @@
 
 <span class="title">Calculateur de Date Impériale</span>
 </p>
-
 <p>
     <label for="dateIRL">Date réelle</label>
     <input type="datetime-local" id="dateIRL"/>
@@ -204,6 +207,8 @@
 
     function convert() {
         let dateToConvert ='';
+        let error = false;
+        $('.result').removeClass('error');
         if ($('#dateIRL').val() === '' ) {
             dateToConvert = new Date();
             $('#dateIRL').val(dateToConvert.toISOString().substring(0,16));
@@ -212,14 +217,26 @@
         }
 
         let year = dateToConvert.getFullYear().toString();
+        if (year.length < 4) {
+            if (year.length === 3) {
+                year = "0" + year;
+            } else {
+                error = true;
+            }
+        }
         let dayOfYear = Math.ceil((dateToConvert - new Date(dateToConvert.getFullYear(),0,1)) / 86400000);
         let hour = dateToConvert.getHours();
 
         let imperialDay = Math.floor((dayOfYear * 24 + hour) * 0.11407955);
 
         let checkLevel = $('#checkLevel').val();
-
-        let finalImperialDate = checkLevel + '.' + imperialDay + '.' + year.substring(1) + '.M4' + year.substring(0,1) ;
+        let finalImperialDate = '';
+        if (error !== true) {
+            finalImperialDate = checkLevel + '.' + imperialDay + '.' + year.substring(1) + '.M4' + year.substring(0,1) ;
+        } else {
+            finalImperialDate = 'Erreur, date "' + dateToConvert.toISOString() + '" invalide !';
+            $('.result').addClass('error');
+        }
 
         $('.result').text(finalImperialDate);
     }
