@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculateur en JS</title>
+</head>
+<body>
+
+<h1>Calculateur de date impériale</h1>
+
+<p>
+    <label for="dateIRL">Date réelle</label>
+    <input type="datetime-local" id="dateIRL"/>
+</p>
+<p>
+    <label for="checkLevel">Fiabilité</label>
+    <select id="checkLevel">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+    </select>
+</p>
+
+<button id="convert" onclick="convert()">Convertir</button>
+<p>Résultat : <span class="result"></span></p>
+<script
+        src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+        crossorigin="anonymous"></script>
+<script>
+    function convert() {
+        let dateToConvert = new Date($('#dateIRL').val());
+
+        let year = dateToConvert.getFullYear().toString();
+        year = year.substring(1);
+        let dayOfYear = Math.ceil((dateToConvert - new Date(dateToConvert.getFullYear(),0,1)) / 86400000);
+        let hour = dateToConvert.getHours();
+
+        let imperialDay = Math.floor((dayOfYear * 24 + hour) * 0.11407955);
+
+        let checkLevel = $('#checkLevel').val();
+
+        let finalImperialDate = checkLevel + '.' + imperialDay + '.' + year + '.M42';
+
+        $('.result').text(finalImperialDate);
+    }
+</script>
+</body>
+</html>
